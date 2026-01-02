@@ -2,194 +2,221 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Проверка совместимости личности</title>
+<title>Для Сони ❤️</title>
+
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f1f3f8;
   margin: 0;
-  padding: 0;
-}
-.container {
-  max-width: 950px;
-  margin: 40px auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  padding: 30px;
-}
-h1 {
-  text-align: center;
-  color: #333;
-}
-.question {
-  margin-bottom: 18px;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #fafafa;
-}
-.options label {
-  display: block;
-  margin-top: 5px;
-}
-button {
-  display: block;
-  margin: 25px auto;
-  padding: 12px 22px;
-  background: #007bff;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #2b2b55, #0f1020);
   color: white;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  height: 100vh;
+  padding: 40px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.screen.active {
+  display: flex;
+}
+
+h1, h2 {
+  margin: 0 0 20px;
+}
+
+button {
+  padding: 14px 28px;
+  border-radius: 30px;
   border: none;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ff5fa2, #ff2f6d);
+  color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
 button:hover {
-  background: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 80, 150, 0.4);
 }
-.result {
-  margin-top: 25px;
-  text-align: center;
-  background: #e9f7ef;
-  padding: 25px;
-  border-radius: 15px;
-  display: none;
+
+/* Анимации */
+.fade-in {
+  animation: fade 2s ease forwards;
 }
-.bar-container {
-  width: 100%;
-  background: #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-top: 10px;
-  height: 15px;
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.bar {
-  height: 15px;
-  background: linear-gradient(90deg,#10b981,#3b82f6);
-  width: 0%;
-  transition: width 1.2s ease;
+
+/* Сердце */
+.heart {
+  width: 90px;
+  height: 90px;
+  background: #ff2f6d;
+  transform: rotate(45deg);
+  animation: pulse 1.2s infinite;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  width: 90px;
+  height: 90px;
+  background: #ff2f6d;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.heart::before {
+  top: -45px;
+  left: 0;
+}
+
+.heart::after {
+  left: -45px;
+  top: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1) rotate(45deg); }
+  50% { transform: scale(1.2) rotate(45deg); }
+}
+
+/* Карточки */
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px 25px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  animation: float 3s ease-in-out infinite;
+}
+
+.card:nth-child(2) { animation-delay: 0.5s; }
+.card:nth-child(3) { animation-delay: 1s; }
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Финальные сердечки */
+.heart-fall {
+  position: fixed;
+  top: -20px;
+  color: #ff5fa2;
+  animation: fall linear forwards;
+  font-size: 20px;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
+
 <body>
-<div class="container">
-<h1>Проверка совместимости личности</h1>
-<form id="testForm"></form>
-<div id="result" class="result"></div>
+
+<!-- Экран 1 -->
+<div class="screen active">
+  <h1 class="fade-in">Иногда один человек<br>делает мир ярче ✨</h1>
+  <button onclick="next()">Продолжить</button>
+</div>
+
+<!-- Экран 2 -->
+<div class="screen">
+  <div class="heart"></div>
+  <h2 id="typing"></h2>
+  <button onclick="next()">Дальше</button>
+</div>
+
+<!-- Экран 3 -->
+<div class="screen">
+  <h2 class="fade-in">В тебе прекрасно всё</h2>
+  <div class="cards">
+    <div class="card">Твоя улыбка 😊</div>
+    <div class="card">Твоя доброта 💖</div>
+    <div class="card">Твой смех ✨</div>
+  </div>
+  <button onclick="next()" style="margin-top:30px;">Ещё</button>
+</div>
+
+<!-- Экран 4 -->
+<div class="screen">
+  <h1 class="fade-in">Соня ❤️</h1>
+  <h2 class="fade-in">
+    Этот сайт — маленький<br>
+    но чувства к тебе — огромные
+  </h2>
+  <button onclick="final()">Нажми 😊</button>
 </div>
 
 <script>
-// Эталонные ответы (50 штук)
-const referenceAnswers = [
-"A","A","B","A","C","B","A","B","A","B",
-"C","A","A","B","C","A","B","C","C","A",
-"B","A","B","A","A","A","A","A","A","A",
-"A","B","B","A","B","C","A","A","A","A",
-"C","C","B","C","B","C","B","C","C","C"
-];
+let current = 0;
+const screens = document.querySelectorAll('.screen');
 
-// Вопросы
-const questions = [
-"Мне нравится пробовать новые виды деятельности",
-"Я люблю читать книги или статьи, которые заставляют задуматься",
-"Я легко воспринимаю новые идеи и изменения",
-"Мне интересно изучать другие культуры",
-"Я люблю обсуждать абстрактные темы",
-"Я ценю искусство и творчество",
-"Мне нравится экспериментировать с новыми подходами",
-"Я быстро осваиваю новые навыки",
-"Я предпочитаю разнообразие в жизни",
-"Мне нравится выходить из зоны комфорта",
-"Я обычно довожу начатые дела до конца",
-"Я заранее планирую свои действия",
-"Мне важно соблюдать порядок",
-"Я стараюсь выполнять обещания",
-"Я редко опаздываю",
-"Я предпочитаю действовать по плану",
-"Я умею концентрироваться на задаче",
-"Я редко откладываю дела на потом",
-"Мне нравится систематизировать и структурировать информацию",
-"Я несу ответственность за свои действия",
-"Мне нравится общаться с новыми людьми",
-"Я чувствую себя уверенно в центре внимания",
-"Я получаю энергию от общения с другими",
-"Мне нравится быть частью группы или команды",
-"Я люблю участвовать в социальных мероприятиях",
-"Я часто делюсь своими эмоциями с другими",
-"Мне нравится активно выражать свои мысли",
-"Я легко завожу новые знакомства",
-"Я предпочитаю активный отдых, а не пассивный",
-"Я люблю командные игры и проекты",
-"Я стараюсь помогать другим людям",
-"Я легко иду на компромисс",
-"Мне важно, чтобы окружающие чувствовали себя хорошо",
-"Я умею слушать других",
-"Я стараюсь избегать конфликтов",
-"Я доверяю людям",
-"Я люблю заботиться о близких",
-"Я умею прощать ошибки других",
-"Я стараюсь быть вежливым и тактичным",
-"Я ценю дружеские отношения",
-"Я сохраняю спокойствие даже в стрессовых ситуациях",
-"Я редко раздражаюсь по пустякам",
-"Я умею контролировать свои эмоции",
-"Я не поддаюсь панике",
-"Я быстро прихожу в норму после неудач",
-"Я не принимаю всё близко к сердцу",
-"Я умею сохранять хладнокровие в конфликте",
-"Я не зацикливаюсь на проблемах",
-"Я редко испытываю стресс",
-"Я умею сохранять внутренний баланс даже при трудностях"
-];
+function next() {
+  screens[current].classList.remove('active');
+  current++;
+  screens[current].classList.add('active');
 
-// Выбор 20 случайных вопросов
-function getRandomSubset(arr, n) {
-  const copy = [...arr];
-  const result = [];
-  while(result.length < n && copy.length){
-    const i = Math.floor(Math.random()*copy.length);
-    result.push({text: copy[i], index: arr.indexOf(copy[i])});
-    copy.splice(i,1);
-  }
-  return result;
+  if (current === 1) typeText();
 }
 
-const selected = getRandomSubset(questions, 20);
-const form = document.getElementById("testForm");
+function typeText() {
+  const text = "И этого человека зовут Соня 💫";
+  let i = 0;
+  const el = document.getElementById("typing");
+  el.textContent = "";
 
-selected.forEach((q, i)=>{
-  const div = document.createElement("div");
-  div.className = "question";
-  div.innerHTML = `<p>${i+1}. ${q.text}</p>
-  <label><input type="radio" name="q${i}" value="A" required> A) Согласен</label>
-  <label><input type="radio" name="q${i}" value="B"> B) Иногда</label>
-  <label><input type="radio" name="q${i}" value="C"> C) Не согласен</label>`;
-  form.appendChild(div);
-});
+  const timer = setInterval(() => {
+    el.textContent += text[i];
+    i++;
+    if (i === text.length) clearInterval(timer);
+  }, 80);
+}
 
-const btn = document.createElement("button");
-btn.textContent = "Проверить совместимость";
-form.appendChild(btn);
+function final() {
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart-fall';
+    heart.textContent = '❤️';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+    document.body.appendChild(heart);
 
-form.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const userAnswers = selected.map((q,i)=> form[`q${i}`].value);
-  let matches = 0;
-  userAnswers.forEach((ans,i)=>{
-    const ref = referenceAnswers[selected[i].index];
-    if(ans === ref) matches++;
-  });
-  const percent = Math.round((matches / userAnswers.length) * 100);
-  const verdict = percent >= 75 ? "Идеальное совпадение ✅" :
-                   percent >= 55 ? "Средняя совместимость ⚠️" :
-                   "Низкая совместимость ❌";
-  const resultDiv = document.getElementById("result");
-  resultDiv.style.display = "block";
-  resultDiv.innerHTML = `<h2>Совместимость: ${percent}% — ${verdict}</h2>
-  <div class='bar-container'><div class='bar' style='width:${percent}%'></div></div>
-  <p>Совпадений: ${matches} из ${userAnswers.length}</p>`;
-});
+    setTimeout(() => heart.remove(), 5000);
+  }
+
+  setTimeout(() => {
+    alert("Соня, ты делаешь мой мир лучше каждый день ❤️");
+  }, 800);
+}
 </script>
+
 </body>
 </html>
