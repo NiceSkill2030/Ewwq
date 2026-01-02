@@ -5,9 +5,7 @@
 <title>Для Сони ❤️</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -31,8 +29,8 @@ body {
   display: flex;
 }
 
-h1, h2 {
-  margin: 0 0 20px;
+h1, h2, p {
+  margin-bottom: 20px;
 }
 
 button {
@@ -53,7 +51,7 @@ button:hover {
 
 /* Анимации */
 .fade-in {
-  animation: fade 2s ease forwards;
+  animation: fade 1.8s ease forwards;
 }
 
 @keyframes fade {
@@ -82,18 +80,11 @@ button:hover {
   position: absolute;
 }
 
-.heart::before {
-  top: -45px;
-  left: 0;
-}
-
-.heart::after {
-  left: -45px;
-  top: 0;
-}
+.heart::before { top: -45px; left: 0; }
+.heart::after { left: -45px; top: 0; }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1) rotate(45deg); }
+  0%,100% { transform: scale(1) rotate(45deg); }
   50% { transform: scale(1.2) rotate(45deg); }
 }
 
@@ -106,7 +97,7 @@ button:hover {
 }
 
 .card {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   padding: 20px 25px;
   border-radius: 20px;
   backdrop-filter: blur(6px);
@@ -121,13 +112,27 @@ button:hover {
   50% { transform: translateY(-10px); }
 }
 
-/* Финальные сердечки */
+/* Таймер */
+.timer {
+  font-size: 18px;
+  line-height: 1.6;
+  background: rgba(255,255,255,0.1);
+  padding: 20px 26px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.infinity {
+  font-size: 28px;
+  margin-top: 10px;
+}
+
+/* Падающие сердечки */
 .heart-fall {
   position: fixed;
   top: -20px;
-  color: #ff5fa2;
   animation: fall linear forwards;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 @keyframes fall {
@@ -136,14 +141,31 @@ button:hover {
     opacity: 0;
   }
 }
+
+/* Музыка */
+#music {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
 </style>
 </head>
 
 <body>
 
+<!-- Любовный K-pop -->
+<iframe
+  id="music"
+  src="https://www.youtube.com/embed/OcVmaIlHZ1o?autoplay=1&mute=1&loop=1&playlist=OcVmaIlHZ1o"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
+
 <!-- Экран 1 -->
 <div class="screen active">
-  <h1 class="fade-in">Иногда один человек<br>делает мир ярче ✨</h1>
+  <h1 class="fade-in">Иногда всё начинается<br>с одного обычного дня ✨</h1>
+  <p class="fade-in">1 декабря 2025 года</p>
   <button onclick="next()">Продолжить</button>
 </div>
 
@@ -151,26 +173,41 @@ button:hover {
 <div class="screen">
   <div class="heart"></div>
   <h2 id="typing"></h2>
+  <p class="fade-in">
+    Прошло совсем немного времени…<br>
+    <small>(и всё стало понятно 😏)</small>
+  </p>
   <button onclick="next()">Дальше</button>
 </div>
 
 <!-- Экран 3 -->
 <div class="screen">
-  <h2 class="fade-in">В тебе прекрасно всё</h2>
-  <div class="cards">
-    <div class="card">Твоя улыбка 😊</div>
-    <div class="card">Твоя доброта 💖</div>
-    <div class="card">Твой смех ✨</div>
-  </div>
-  <button onclick="next()" style="margin-top:30px;">Ещё</button>
+  <h2 class="fade-in">📅 9 декабря 2025</h2>
+  <p class="fade-in">
+    Начало отношений ❤️<br><br>
+    Скорость: <strong>знакомство → отношения</strong><br>
+    всего за <strong>8 дней</strong> ⚡<br><br>
+    Иногда просто не хочется тянуть 😉
+  </p>
+  <button onclick="next()">А дальше?</button>
 </div>
 
-<!-- Экран 4 -->
+<!-- Экран 4 — Таймер -->
+<div class="screen">
+  <h2 class="fade-in">Мы вместе уже</h2>
+  <div class="timer fade-in" id="timer"></div>
+  <div class="infinity fade-in">
+    Дата окончания: ♾
+  </div>
+  <button onclick="next()" style="margin-top:30px;">Финал</button>
+</div>
+
+<!-- Экран 5 -->
 <div class="screen">
   <h1 class="fade-in">Соня ❤️</h1>
   <h2 class="fade-in">
-    Этот сайт — маленький<br>
-    но чувства к тебе — огромные
+    Спасибо, что так быстро<br>
+    стала самым важным человеком
   </h2>
   <button onclick="final()">Нажми 😊</button>
 </div>
@@ -178,8 +215,15 @@ button:hover {
 <script>
 let current = 0;
 const screens = document.querySelectorAll('.screen');
+const music = document.getElementById('music');
+
+// Дата начала отношений
+const startDate = new Date('2025-12-09T00:00:00');
 
 function next() {
+  // включаем звук при первом клике
+  music.src = music.src.replace("mute=1", "mute=0");
+
   screens[current].classList.remove('active');
   current++;
   screens[current].classList.add('active');
@@ -200,20 +244,40 @@ function typeText() {
   }, 80);
 }
 
+// Таймер отношений
+function updateTimer() {
+  const now = new Date();
+  let diff = now - startDate;
+  if (diff < 0) diff = 0;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('timer').innerHTML =
+    `<strong>${days}</strong> дней<br>
+     <strong>${hours}</strong> часов<br>
+     <strong>${minutes}</strong> минут<br>
+     <strong>${seconds}</strong> секунд 💖`;
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
+
 function final() {
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 50; i++) {
     const heart = document.createElement('div');
     heart.className = 'heart-fall';
     heart.textContent = '❤️';
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.animationDuration = (2 + Math.random() * 3) + 's';
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 5000);
   }
 
   setTimeout(() => {
-    alert("Соня, ты делаешь мой мир лучше каждый день ❤️");
+    alert("Соня, я хочу, чтобы этот таймер никогда не останавливался ♾❤️");
   }, 800);
 }
 </script>
